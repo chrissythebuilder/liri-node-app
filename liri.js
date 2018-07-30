@@ -35,7 +35,7 @@ if (process.argv[2] === "my-tweets") {
 // "spotify-this-song"
 // node liri.js spotify-this-song '<song name here>': this will show the following > artist(s), the song's name, preview link of the song from Spotify, album that the song is from
 
-var Spotify = require("spotify");
+var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 
 if (process.argv[2] === "spotify-this-song") {
@@ -49,17 +49,18 @@ if (process.argv[2] === "spotify-this-song") {
             }
         }
 
+        if(trackQuery === undefined) {
+            trackQuery = songName;
+        }
+
         spotify.search({type: "track", query: trackQuery}, function(error, data) {
             if (!error) {
                 console.log("Artist: " + data.artists[0].name + "\nSong: " + data.name + "\nSpotify Preview Link: " + data.preview_url + "\nAlbum Name: " + data.album.name)
             }
         })
-
-
     }
     songFeed()
 }
-
 
 
 // OMDB API
@@ -88,14 +89,22 @@ if (process.argv[2] === "movie-this") {
 
 }
 
-// 
+// Retrieves data from the random.txt file
 
-// var fs = require("fs");
+var fs = require("fs");
 
-// if (process.argv[2] === "do-what-it-says") {
-//     function randomText() {
+if (process.argv[2] === "do-what-it-says") {
+    function randomText() {
+        fs.readFile("random.txt", "utf8", function(error,data) {
+            if (error) {
+                return console.log(error);
+            } 
+            console.log(data)
 
-//     }
-//     randomText();
-// }
+            var dataArr = data.split(",");
+            console.log(dataArr);
+        })
+    }
+    randomText();
+}
 
