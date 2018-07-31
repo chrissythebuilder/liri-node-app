@@ -41,13 +41,20 @@ if (process.argv[2] === "spotify-this-song") {
     function songFeed() {
         var songName = "";
 
-        for (var i = 3; i < process.argv.length; i++) {
-            if (i > 3 && i < process.argv.length) {
-                songName = songName + "+" + process.argv[i];
-            }
-        }
+        var termSong = process.argv.slice(3).join(" ");
+        songName = termSong
+
+        // for (var i = 3; i < process.argv.length; i++) {
+        //     if (i > 3 && i < process.argv.length) {
+        //         songName = songName + "+" + process.argv[i];
+        //     }
+        // }
+        // songName='havana'
+        // console.log('==============')
+        // console.log(songName)
 
         spotify.search({type: "track", query: songName}, function(error, data) {
+            console.log(data)
             if (!error) {
                 console.log("Artist: " + data.artists[0].name + "\nSong: " + data.name + "\nSpotify Preview Link: " + data.preview_url + "\nAlbum Name: " + data.album.name)
             }
@@ -65,13 +72,16 @@ if (process.argv[2] === "movie-this") {
     function movieFeed() {
         var movieName = "";
 
-        for (var i = 3; i < process.argv.length; i++) {
-            if (i > 3 && i < process.argv.length) {
-                movieName = movieName + "+" + process.argv[i];
-            }
-        }
+        var termMovie = process.argv.slice(3).join(" ");
+        movieName = termMovie
+
+        // for (var i = 3; i < process.argv.length; i++) {
+        //     if (i > 3 && i < process.argv.length) {
+        //         movieName = movieName + "+" + process.argv[i];
+        //     }
+        // }
     
-        request("http://www.omdbapi.com/?apikey=329ca5a0&t=" + movieName, function(error, response, body) {
+        request("http://www.omdbapi.com/?apikey=trilogy&t=" + movieName, function(error, response, body) {
             if (!error && response.statusCode === 200) {
                 console.log("- Movie Title: " + JSON.parse(body).Title + "\n- Release Year: " + JSON.parse(body).Year + "\n- IMDB Rating: " + JSON.parse(body).imdbRating + "\n- Rotten Tomatoes Rating of the movie: " + JSON.parse(body).Ratings[2].Value + "\n- Country produced: " + JSON.parse(body).Country + "\n- Language of the movie: " + JSON.parse(body).Language + "\n- Plot of the Movie: " + JSON.parse(body).Plot + "\n- Cast: " + JSON.parse(body).Actors);
             }
